@@ -38,7 +38,8 @@ public class MVCPattern {
 			}
 
 			if(message.equals("associate-mbway")) {
-				AssociateMBWayController controller = new AssociateMBWayController(newMBWay,n2,n1);
+				String[] n2n1= {n2,n1};
+				AssociateMBWayController controller = new AssociateMBWayController(newMBWay,n2n1);
 				int code = controller.associateMBwayAccount();
 				view.printCode(code);
 			}
