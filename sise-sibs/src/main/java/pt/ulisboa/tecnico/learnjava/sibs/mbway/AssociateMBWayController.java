@@ -11,9 +11,9 @@ public class AssociateMBWayController {
 	private MbWay mbWay;
 	private int code;
 
-	public AssociateMBWayController(MbWay mbWay, String nPhone, String iban) {
-		this.nPhone=nPhone;
-		this.iban=iban;
+	public AssociateMBWayController(MbWay mbWay, String[] nPhoneiban) {
+		this.nPhone=nPhoneiban[0];
+		this.iban=nPhoneiban[1];
 		this.mbWay=mbWay;
 	}
 
