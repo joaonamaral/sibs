@@ -82,41 +82,14 @@ public class MVCPattern {
 						if(exists) {
 							insuranceSplit.put(pNumber, amount);
 						}
-						else
-							view.insuranceWrongNumber(pNumber);
+						else view.insuranceWrongNumber(pNumber);
 					}
 					else if(messageIns.equals("end")) {
 					}
-					else
-						view.insuranceNotFamily();
+					else view.insuranceNotFamily();
 					if(insuranceSplit.size()==1 && pNumber!="" &&count==0)firstNumber=pNumber;count++;
 				}
-
-				if(insuranceSplit.size()==0) {
-					int nMemberMin = controller.memberMin(insuranceSplit,firstNumber);
-					view.insuranceMMissing(nMemberMin);
-				}
-
-				else {
-					boolean totalAmountCheck = controller.checkTotalAmount(insuranceSplit,firstNumber);
-					if(totalAmountCheck) {
-						boolean balances = controller.checkBalances(insuranceSplit,firstNumber);
-						if(balances) {
-							boolean nMemberMax = controller.memberMax(insuranceSplit,firstNumber);
-							if(nMemberMax) {
-								int nMemberMin = controller.memberMin(insuranceSplit,firstNumber);
-								if(nMemberMin==0) {
-									controller.doTransfers(insuranceSplit,firstNumber);
-									view.insuranceSuccess();
-								}
-								else view.insuranceMMissing(nMemberMin);
-							}
-							else view.insuranceTooMany();
-						}
-						else view.insuranceNotEnoughMoney();
-					}
-					else view.insuranceAmountWrong();
-				}
+				processFamilyMembers(controller,view,insuranceSplit,firstNumber);
 			}
 			else if(message.equals("exit")) {
 				System.out.println("MBWAY terminated with success.");
@@ -147,6 +120,35 @@ public class MVCPattern {
 //		MbWay mbWay=new MbWay(services);
 
 		return mbWay;
+	}
+	
+	private static void processFamilyMembers(InsuranceMBWayController controller, MbWayView view, HashMap<String, String> insuranceSplit, String firstNumber) throws NumberFormatException, AccountException {
+
+		if(insuranceSplit.size()==0) {
+			int nMemberMin = controller.memberMin(insuranceSplit,firstNumber);
+			view.insuranceMMissing(nMemberMin);
+		}
+
+		else {
+			boolean totalAmountCheck = controller.checkTotalAmount(insuranceSplit,firstNumber);
+			if(totalAmountCheck) {
+				boolean balances = controller.checkBalances(insuranceSplit,firstNumber);
+				if(balances) {
+					boolean nMemberMax = controller.memberMax(insuranceSplit,firstNumber);
+					if(nMemberMax) {
+						int nMemberMin = controller.memberMin(insuranceSplit,firstNumber);
+						if(nMemberMin==0) {
+							controller.doTransfers(insuranceSplit,firstNumber);
+							view.insuranceSuccess();
+						}
+						else view.insuranceMMissing(nMemberMin);
+					}
+					else view.insuranceTooMany();
+				}
+				else view.insuranceNotEnoughMoney();
+			}
+			else view.insuranceAmountWrong();
+		}
 	}
 
 }
