@@ -61,34 +61,9 @@ public class MVCPattern {
 				}else view.tranferWrongNumber();
 			}
 			else if(message.equals("mbway-split-insurance")) {
-				String messageIns="";
-				String firstNumber="";
-				int count=0;
 				HashMap<String, String> insuranceSplit = new HashMap<String, String>();
 				InsuranceMBWayController controller = new InsuranceMBWayController(newMBWay,n1,n2);
-				while(!messageIns.equals("end")) {
-					String mnStringFam = input.nextLine();
-					String[] mnStringFamily=mnStringFam.split(" ");
-					messageIns=mnStringFamily[0];
-					String pNumber="";
-					String amount="";
-					if(mnStringFamily.length>1) {
-						pNumber=mnStringFamily[1];
-						amount=mnStringFamily[2];
-					}
-
-					if (messageIns.equals("family-member")) {
-						boolean exists=controller.checkNumber(pNumber);
-						if(exists) {
-							insuranceSplit.put(pNumber, amount);
-						}
-						else view.insuranceWrongNumber(pNumber);
-					}
-					else if(messageIns.equals("end")) {
-					}
-					else view.insuranceNotFamily();
-					if(insuranceSplit.size()==1 && pNumber!="" &&count==0)firstNumber=pNumber;count++;
-				}
+				String firstNumber=introduceFamilyMembers(input,controller,view,insuranceSplit);
 				processFamilyMembers(controller,view,insuranceSplit,firstNumber);
 			}
 			else if(message.equals("exit")) {
@@ -149,6 +124,36 @@ public class MVCPattern {
 			}
 			else view.insuranceAmountWrong();
 		}
+	}
+	
+	private static String introduceFamilyMembers(Scanner input, InsuranceMBWayController controller, MbWayView view, HashMap<String, String> insuranceSplit) {
+		String messageIns="";
+		String firstNumber="";
+		int count=0;
+		while(!messageIns.equals("end")) {
+			String mnStringFam = input.nextLine();
+			String[] mnStringFamily=mnStringFam.split(" ");
+			messageIns=mnStringFamily[0];
+			String pNumber="";
+			String amount="";
+			if(mnStringFamily.length>1) {
+				pNumber=mnStringFamily[1];
+				amount=mnStringFamily[2];
+			}
+
+			if (messageIns.equals("family-member")) {
+				boolean exists=controller.checkNumber(pNumber);
+				if(exists) {
+					insuranceSplit.put(pNumber, amount);
+				}
+				else view.insuranceWrongNumber(pNumber);
+			}
+			else if(messageIns.equals("end")) {
+			}
+			else view.insuranceNotFamily();
+			if(insuranceSplit.size()==1 && pNumber!="" &&count==0)firstNumber=pNumber;count++;
+		}
+		return firstNumber;
 	}
 
 }
