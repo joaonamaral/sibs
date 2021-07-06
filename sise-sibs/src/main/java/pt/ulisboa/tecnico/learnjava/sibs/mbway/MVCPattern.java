@@ -109,17 +109,13 @@ public class MVCPattern {
 									controller.doTransfers(insuranceSplit,firstNumber);
 									view.insuranceSuccess();
 								}
-								else
-									view.insuranceMMissing(nMemberMin);
+								else view.insuranceMMissing(nMemberMin);
 							}
-							else
-								view.insuranceTooMany();
+							else view.insuranceTooMany();
 						}
-						else
-							view.insuranceNotEnoughMoney();
+						else view.insuranceNotEnoughMoney();
 					}
-					else
-						view.insuranceAmountWrong();
+					else view.insuranceAmountWrong();
 				}
 			}
 			else if(message.equals("exit")) {
